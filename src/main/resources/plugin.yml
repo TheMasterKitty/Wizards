@@ -1,0 +1,7 @@
+name: WizardTree
+version: '${project.version}'
+main: wizards.wizardtree.WizardTree
+api-version: '1.19'
+prefix: Wizards
+authors: [TheMasterKitty, Lonleyx_]
+description: Grow magic to craft powerful wands of chaos or growth.
