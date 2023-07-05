@@ -1,7 +1,13 @@
-name: WizardTree
+name: Wizards
 version: '${project.version}'
-main: wizards.wizardtree.WizardTree
+main: wizards.wizards.Wizards
 api-version: '1.19'
 prefix: Wizards
 authors: [TheMasterKitty, Lonleyx_]
 description: Grow magic to craft powerful wands of chaos or growth.
+depend: [ NBTAPI ]
+
+commands:
+  givewand:
+    description: Give a wand of any type to any player.
+    aliases: [ wandgive ]
