@@ -51,7 +51,7 @@ public class Toxic extends Wand {
                 if (secondCooldowns.get(user.getUniqueId()) <= 60) cancel();
                 location.getNearbyLivingEntities(10).forEach(entity -> {
                     if (entity.getUniqueId() != user.getUniqueId())
-                        entity.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 15, 0));
+                        entity.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 15, 1));
                 });
             }
         }.runTaskTimer(JavaPlugin.getPlugin(Wizards.class), 0, 10);
