@@ -67,7 +67,7 @@ public class Toxic extends Wand {
                         for (double j = 0; j < 8; j += 0.25) {
                             double x = location.getX() + j * Math.cos(angle);
                             double z = location.getZ() + j * Math.sin(angle);
-                            Location particleLocation = new Location(location.getWorld(), x, location.getY(), z);
+                            Location particleLocation = new Location(location.getWorld(), x, location.getY() + 1, z);
                             location.getWorld().spawnParticle(Particle.REDSTONE, particleLocation, 1, new Particle.DustOptions(Color.GREEN, 2));
                         }
                     }

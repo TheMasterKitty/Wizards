@@ -32,6 +32,7 @@ public final class Wizards extends JavaPlugin {
         wands.put("Travel", new Travel());
         wands.put("Explosive", new Explosive());
         wands.put("Toxic", new Toxic());
+        wands.put("Cloaked", new Cloaked());
 
         ItemStack flamingWand = new ItemStack(Material.STICK);
         NBTItem flamingWandNBTI = new NBTItem(flamingWand);
@@ -98,17 +99,32 @@ public final class Wizards extends JavaPlugin {
         toxicWandRecipe.setIngredient('G', Material.GREEN_WOOL);
         toxicWandRecipe.setIngredient('H', Material.PLAYER_HEAD);
 
+        ItemStack cloakedWand = new ItemStack(Material.STICK);
+        NBTItem cloakedWandNBTI = new NBTItem(cloakedWand);
+        cloakedWandNBTI.setString("wand", "Cloaked");
+        cloakedWandNBTI.applyNBT(cloakedWand);
+        ItemMeta cloakedWandMeta = cloakedWand.getItemMeta();
+        cloakedWandMeta.setDisplayName(Utils.colored("&2Cloaked Wand"));
+        cloakedWandMeta.setLore(Arrays.asList(Utils.colored("&6Main Ability: Invisibility Cloak"), Utils.colored("&dBecome invisible without particles"), Utils.colored("&6Secondary Ability: Protection Cloak"), Utils.colored("&dCreates a ring of protection around you pushing mobs away")));
+        cloakedWand.setItemMeta(cloakedWandMeta);
+        ShapedRecipe cloakedWandRecipe = new ShapedRecipe(cloakedWand);
+        cloakedWandRecipe.shape(" S ", "SHS", " S ");
+        cloakedWandRecipe.setIngredient('S', Material.SHIELD);
+        cloakedWandRecipe.setIngredient('H', Material.PLAYER_HEAD);
+
         Bukkit.getServer().addRecipe(flamingWandRecipe);
         Bukkit.getServer().addRecipe(voidWandRecipe);
         Bukkit.getServer().addRecipe(travelWandRecipe);
         Bukkit.getServer().addRecipe(explosiveWandRecipe);
         Bukkit.getServer().addRecipe(toxicWandRecipe);
+        Bukkit.getServer().addRecipe(cloakedWandRecipe);
 
         wandItems.put("Flaming", flamingWand);
         wandItems.put("Void", voidWand);
         wandItems.put("Travel", travelWand);
         wandItems.put("Explosive", explosiveWand);
         wandItems.put("Toxic", toxicWand);
+        wandItems.put("Cloaked", cloakedWand);
     }
 
     @Override

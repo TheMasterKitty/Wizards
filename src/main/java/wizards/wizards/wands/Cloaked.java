@@ -1,34 +1,26 @@
 package wizards.wizards.wands;
 
-import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
-import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 import wizards.wizards.Wizards;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class Flaming extends Wand {
+public class Cloaked extends Wand {
     private final Map<UUID, Integer> mainCooldowns = new HashMap<>();
     private final Map<UUID, Integer> secondCooldowns = new HashMap<>();
     @Override
     public void onUseWandMain(Player user) {
-        mainCooldowns.put(user.getUniqueId(), 5);
-        Projectile fireball = user.launchProjectile(Fireball.class);
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                if (fireball.isDead()) cancel();
-                Particle.DustOptions dustOptions = new Particle.DustOptions(Color.fromRGB(226, 88, 34), 1.5f);
-                fireball.getWorld().spawnParticle(Particle.REDSTONE, fireball.getLocation(), 1, dustOptions);
-            }
-        }.runTaskTimer(JavaPlugin.getPlugin(Wizards.class), 0, 2);
+        mainCooldowns.put(user.getUniqueId(), 30);
+        user.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 400, 1, true));
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -41,26 +33,29 @@ public class Flaming extends Wand {
 
     @Override
     public void onUseWandSecondary(Player user) {
-        secondCooldowns.put(user.getUniqueId(), 30);
-        user.getNearbyEntities(10, 2, 10).forEach(entity -> entity.setFireTicks(200));
-        Location location = user.getLocation();
-
-        final int[] particleOn = { 0 };
+        secondCooldowns.put(user.getUniqueId(), 33);
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (particleOn[0] == 6) cancel();
+                if (secondCooldowns.get(user.getUniqueId()) == 8) cancel();
                 for (int i = 0; i < 100; i++) {
                     double angle = i * ((2 * Math.PI) / 100);
-                    double x = location.getX() + 8.0 * Math.cos(angle);
-                    double z = location.getZ() + 8.0 * Math.sin(angle);
+                    double x = user.getLocation().getX() + Math.cos(angle);
+                    double z = user.getLocation().getZ() + Math.sin(angle);
 
-                    Location particleLocation = new Location(location.getWorld(), x, location.getY() + 1, z);
-                    location.getWorld().spawnParticle(Particle.SOUL_FIRE_FLAME, particleLocation, 1);
+                    Location particleLocation = new Location(user.getWorld(), x, user.getLocation().getY() + 1, z);
+                    user.getWorld().spawnParticle(Particle.END_ROD, particleLocation, 1);
                 }
-                particleOn[0]++;
+                user.getLocation().getNearbyLivingEntities(3).forEach(entity -> {
+                    if (entity.getUniqueId() != user.getUniqueId()) {
+                        double angle = Math.atan2(entity.getLocation().getZ() - user.getLocation().getZ(), entity.getLocation().getX() - user.getLocation().getX());
+                        double x = user.getLocation().getX() - 0.2 * Math.cos(angle);
+                        double z = user.getLocation().getZ() + 0.2 * Math.sin(angle);
+                        entity.setVelocity(new Vector(entity.getVelocity().getX() + x, entity.getVelocity().getY(), entity.getVelocity().getZ() + z));
+                    }
+                });
             }
-        }.runTaskTimer(JavaPlugin.getPlugin(Wizards.class), 0, 5);
+        }.runTaskTimer(JavaPlugin.getPlugin(Wizards.class), 0, 20);
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -73,12 +68,12 @@ public class Flaming extends Wand {
 
     @Override
     public String mainAbility() {
-        return "Fireblast";
+        return "Invisibility Cloak";
     }
 
     @Override
     public String secondaryAbility() {
-        return "Flame Ring";
+        return "Protection Cloak";
     }
 
     @Override
