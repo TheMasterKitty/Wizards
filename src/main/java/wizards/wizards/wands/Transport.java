@@ -2,9 +2,7 @@ package wizards.wizards.wands;
 
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.EnderPearl;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -15,7 +13,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import wizards.wizards.Wizards;
 import wizards.wizards.misc.Utils;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class Transport extends Wand {
     private final Map<UUID, Integer> mainCooldowns = new HashMap<>();
@@ -59,8 +59,8 @@ public class Transport extends Wand {
     public void onUseWandSecondary(Player user) {
         Entity target = user.getTargetEntity(5);
         if (user.isSneaking() && target != null) {
-            if (target instanceof LivingEntity) {
-                ((LivingEntity) target).setLeashHolder(user);
+            if (target instanceof LivingEntity tar) {
+                tar.setLeashHolder(user);
                 user.sendMessage(Utils.colored("&2Leashed a " + target.getName().toLowerCase().replaceAll("_", " ") + " successfully."));
                 secondCooldowns.put(user.getUniqueId(), 12);
                 new BukkitRunnable() {

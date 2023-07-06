@@ -2,6 +2,7 @@ package wizards.wizards.wands;
 
 import org.bukkit.Location;
 import org.bukkit.Particle;
+import org.bukkit.block.Block;
 import org.bukkit.entity.EnderPearl;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -17,8 +18,14 @@ public class Void extends Wand {
     private final Map<UUID, Integer> secondCooldowns = new HashMap<>();
     @Override
     public void onUseWandMain(Player user) {
+        Block target = Utils.getTargetBlock(user, 50);
         mainCooldowns.put(user.getUniqueId(), 10);
-        user.launchProjectile(EnderPearl.class).setShooter(user);
+        if (target != null) {
+            user.teleport(target.getLocation().add(0, 1, 0));
+        }
+        else {
+            user.launchProjectile(EnderPearl.class);
+        }
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -59,6 +66,7 @@ public class Void extends Wand {
                         user.teleport(new Location(user.getWorld(), x, user.getWorld().getHighestBlockAt(x, z).getY() + 1, z));
                         user.sendMessage(Utils.colored("&2Teleport successfully ran."));
                         secondCooldowns.put(user.getUniqueId(), 6000);
+                        usingRTP.remove(user.getUniqueId());
                         new BukkitRunnable() {
                             @Override
                             public void run() {
@@ -80,7 +88,6 @@ public class Void extends Wand {
                     else cancel();
                 }
             }.runTaskTimer(JavaPlugin.getPlugin(Wizards.class), 0, 1);
-            usingRTP.remove(user.getUniqueId());
         }
         else {
             user.sendMessage(Utils.colored("&cUse sneak while activating the ability to confirm random teleportation"));

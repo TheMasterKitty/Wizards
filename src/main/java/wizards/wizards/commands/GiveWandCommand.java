@@ -73,8 +73,12 @@ public class GiveWandCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
-        if (strings.length == 0) {
-            return new ArrayList<>(Wizards.wands.keySet());
+        if (strings.length == 1) {
+            List<String> options = new ArrayList<>();
+            for (String wand : Wizards.wands.keySet()) {
+                if (wand.startsWith(strings[0])) options.add(wand);
+            }
+            return options;
         }
 
         return null;

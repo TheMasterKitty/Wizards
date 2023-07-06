@@ -10,10 +10,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import wizards.wizards.commands.GiveWandCommand;
 import wizards.wizards.misc.Events;
 import wizards.wizards.misc.Utils;
-import wizards.wizards.wands.Flaming;
-import wizards.wizards.wands.Transport;
+import wizards.wizards.wands.*;
 import wizards.wizards.wands.Void;
-import wizards.wizards.wands.Wand;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -32,6 +30,8 @@ public final class Wizards extends JavaPlugin {
         wands.put("Flaming", new Flaming());
         wands.put("Void", new Void());
         wands.put("Transport", new Transport());
+        wands.put("Explosive", new Explosive());
+        wands.put("Toxic", new Toxic());
 
         ItemStack flamingWand = new ItemStack(Material.STICK);
         NBTItem flamingWandNBTI = new NBTItem(flamingWand);
@@ -72,13 +72,43 @@ public final class Wizards extends JavaPlugin {
         transportWandRecipe.setIngredient('L', Material.LEAD);
         transportWandRecipe.setIngredient('H', Material.PLAYER_HEAD);
 
+        ItemStack explosiveWand = new ItemStack(Material.STICK);
+        NBTItem explosiveWandNBTI = new NBTItem(explosiveWand);
+        explosiveWandNBTI.setString("wand", "Explosive");
+        explosiveWandNBTI.applyNBT(explosiveWand);
+        ItemMeta explosiveWandMeta = explosiveWand.getItemMeta();
+        explosiveWandMeta.setDisplayName(Utils.colored("&eExplosive Wand"));
+        explosiveWandMeta.setLore(Arrays.asList(Utils.colored("&6Main Ability: Tactical Missile"), Utils.colored("&dSummons TNT where you are looking"), Utils.colored("&6Secondary Ability: TNT Tunnel"), Utils.colored("&dTNT digs underground in a tunnel and gives you a button to ignite it")));
+        explosiveWand.setItemMeta(explosiveWandMeta);
+        ShapedRecipe explosiveWandRecipe = new ShapedRecipe(explosiveWand);
+        explosiveWandRecipe.shape(" T ", "THT", " T ");
+        explosiveWandRecipe.setIngredient('T', Material.TNT);
+        explosiveWandRecipe.setIngredient('H', Material.PLAYER_HEAD);
+
+        ItemStack toxicWand = new ItemStack(Material.STICK);
+        NBTItem toxicWandNBTI = new NBTItem(toxicWand);
+        toxicWandNBTI.setString("wand", "Toxic");
+        toxicWandNBTI.applyNBT(toxicWand);
+        ItemMeta toxicWandMeta = toxicWand.getItemMeta();
+        toxicWandMeta.setDisplayName(Utils.colored("&2Toxic Wand"));
+        toxicWandMeta.setLore(Arrays.asList(Utils.colored("&6Main Ability: Toxic Spray"), Utils.colored("&dPoisons the mob you're looking at"), Utils.colored("&6Secondary Ability: Poison Gas"), Utils.colored("&dCreates a cloud of poison that damages nearby players")));
+        toxicWand.setItemMeta(toxicWandMeta);
+        ShapedRecipe toxicWandRecipe = new ShapedRecipe(toxicWand);
+        toxicWandRecipe.shape(" G ", "GHG", " G ");
+        toxicWandRecipe.setIngredient('G', Material.GREEN_WOOL);
+        toxicWandRecipe.setIngredient('H', Material.PLAYER_HEAD);
+
         Bukkit.getServer().addRecipe(flamingWandRecipe);
         Bukkit.getServer().addRecipe(voidWandRecipe);
         Bukkit.getServer().addRecipe(transportWandRecipe);
+        Bukkit.getServer().addRecipe(explosiveWandRecipe);
+        Bukkit.getServer().addRecipe(toxicWandRecipe);
 
         wandItems.put("Flaming", flamingWand);
         wandItems.put("Void", voidWand);
         wandItems.put("Transport", transportWand);
+        wandItems.put("Explosive", explosiveWand);
+        wandItems.put("Toxic", toxicWand);
     }
 
     @Override

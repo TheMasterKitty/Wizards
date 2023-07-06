@@ -5,7 +5,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -25,7 +24,7 @@ public class Events implements Listener {
             if (nbti.hasKey("wand") && Wizards.wands.containsKey(nbti.getString("wand"))) {
                 Wand wand = Wizards.wands.get(nbti.getString("wand"));
                 Player p = event.getPlayer();
-                if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
+                if (event.getAction().isLeftClick()) {
                     if (wand.getMainCooldown(p) > 0) {
                         p.sendMessage(Utils.colored("&cYour " + wand.mainAbility() + " ability is on cooldown with " + wand.getMainCooldown(p) + " seconds remaining."));
                     }
@@ -34,7 +33,7 @@ public class Events implements Listener {
                         p.sendMessage(Utils.colored("&6Activated your " + wand.mainAbility() + " ability!"));
                     }
                 }
-                else if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+                else if (event.getAction().isRightClick()) {
                     if (wand.getSecondaryCooldown(p) > 0) {
                         p.sendMessage(Utils.colored("&cYour " + wand.secondaryAbility() + " ability is on cooldown with " + wand.getSecondaryCooldown(p) + " seconds remaining."));
                     }
