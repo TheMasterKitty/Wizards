@@ -3,13 +3,12 @@ package wizards.wizards.wands;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 import wizards.wizards.Wizards;
 import wizards.wizards.misc.Utils;
 
@@ -17,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class Transport extends Wand {
+public class Travel extends Wand {
     private final Map<UUID, Integer> mainCooldowns = new HashMap<>();
     private final Map<UUID, Integer> secondCooldowns = new HashMap<>();
     @Override
@@ -40,7 +39,7 @@ public class Transport extends Wand {
 
             user.sendMessage(Utils.colored("&2Succesfully boosted!"));
 
-            mainCooldowns.put(user.getUniqueId(), 15);
+            mainCooldowns.put(user.getUniqueId(), 12);
             new BukkitRunnable() {
                 @Override
                 public void run() {
@@ -57,29 +56,21 @@ public class Transport extends Wand {
 
     @Override
     public void onUseWandSecondary(Player user) {
-        Entity target = user.getTargetEntity(5);
-        if (user.isSneaking() && target != null) {
-            if (target instanceof LivingEntity tar) {
-                tar.setLeashHolder(user);
-                user.sendMessage(Utils.colored("&2Leashed a " + target.getName().toLowerCase().replaceAll("_", " ") + " successfully."));
-                secondCooldowns.put(user.getUniqueId(), 12);
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        if (secondCooldowns.get(user.getUniqueId()) > 0)
-                            secondCooldowns.put(user.getUniqueId(), secondCooldowns.get(user.getUniqueId()) - 1);
-                        else cancel();
-                    }
-                }.runTaskTimer(JavaPlugin.getPlugin(Wizards.class), 0, 20);
-            }
-            else {
-                user.sendMessage(Utils.colored("&cThe mob you're looking at can't be leashed."));
-            }
+        if (user.isGliding()) {
+            user.setVelocity(user.getVelocity().add(new Vector(0, 4, 0)));
+            secondCooldowns.put(user.getUniqueId(), 16);
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    if (secondCooldowns.get(user.getUniqueId()) > 0)
+                        secondCooldowns.put(user.getUniqueId(), secondCooldowns.get(user.getUniqueId()) - 1);
+                    else cancel();
+                }
+            }.runTaskTimer(JavaPlugin.getPlugin(Wizards.class), 0, 20);
         }
-        else if (!user.isSneaking())
-            user.sendMessage(Utils.colored("&cUse sneak while activating the ability to leash the mob."));
-        else
-            user.sendMessage(Utils.colored("&cThere isn't a mob you're looking at close enough to be leashed."));
+        else {
+            user.sendMessage(Utils.colored("&cYou have to be using an elytra to boost up!"));
+        }
     }
 
     @Override
@@ -89,7 +80,7 @@ public class Transport extends Wand {
 
     @Override
     public String secondaryAbility() {
-        return "Leash";
+        return "Sky-high";
     }
 
     @Override

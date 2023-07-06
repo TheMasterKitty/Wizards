@@ -48,8 +48,10 @@ public class Toxic extends Wand {
         new BukkitRunnable() {
             @Override
             public void run() {
+                if (secondCooldowns.get(user.getUniqueId()) <= 60) cancel();
                 location.getNearbyLivingEntities(10).forEach(entity -> {
-                    entity.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 15, 1));
+                    if (entity.getUniqueId() != user.getUniqueId())
+                        entity.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 15, 0));
                 });
             }
         }.runTaskTimer(JavaPlugin.getPlugin(Wizards.class), 0, 10);

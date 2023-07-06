@@ -29,7 +29,7 @@ public final class Wizards extends JavaPlugin {
 
         wands.put("Flaming", new Flaming());
         wands.put("Void", new Void());
-        wands.put("Transport", new Transport());
+        wands.put("Travel", new Travel());
         wands.put("Explosive", new Explosive());
         wands.put("Toxic", new Toxic());
 
@@ -59,18 +59,18 @@ public final class Wizards extends JavaPlugin {
         voidWandRecipe.setIngredient('P', Material.ENDER_PEARL);
         voidWandRecipe.setIngredient('H', Material.PLAYER_HEAD);
 
-        ItemStack transportWand = new ItemStack(Material.STICK);
-        NBTItem transportWandNBTI = new NBTItem(transportWand);
-        transportWandNBTI.setString("wand", "Transport");
-        transportWandNBTI.applyNBT(transportWand);
-        ItemMeta transportWandMeta = transportWand.getItemMeta();
-        transportWandMeta.setDisplayName(Utils.colored("&eTransport Wand"));
-        transportWandMeta.setLore(Arrays.asList(Utils.colored("&6Main Ability: Wind Tunnel"), Utils.colored("&dBoost your elyra!"), Utils.colored("&6Secondary Ability: Leash"), Utils.colored("&dAttach a mob to you so you can travel with it easily.")));
-        transportWand.setItemMeta(transportWandMeta);
-        ShapedRecipe transportWandRecipe = new ShapedRecipe(transportWand);
-        transportWandRecipe.shape(" L ", "LHL", " L ");
-        transportWandRecipe.setIngredient('L', Material.LEAD);
-        transportWandRecipe.setIngredient('H', Material.PLAYER_HEAD);
+        ItemStack travelWand = new ItemStack(Material.STICK);
+        NBTItem travelWandNBTI = new NBTItem(travelWand);
+        travelWandNBTI.setString("wand", "Travel");
+        travelWandNBTI.applyNBT(travelWand);
+        ItemMeta travelWandMeta = travelWand.getItemMeta();
+        travelWandMeta.setDisplayName(Utils.colored("&eTravel Wand"));
+        travelWandMeta.setLore(Arrays.asList(Utils.colored("&6Main Ability: Wind Tunnel"), Utils.colored("&dBoost your glide speed"), Utils.colored("&6Secondary Ability: Sky-high"), Utils.colored("&dBoost yourself straight into the sky while gliding")));
+        travelWand.setItemMeta(travelWandMeta);
+        ShapedRecipe travelWandRecipe = new ShapedRecipe(travelWand);
+        travelWandRecipe.shape(" L ", "LHL", " L ");
+        travelWandRecipe.setIngredient('L', Material.PAPER);
+        travelWandRecipe.setIngredient('H', Material.PLAYER_HEAD);
 
         ItemStack explosiveWand = new ItemStack(Material.STICK);
         NBTItem explosiveWandNBTI = new NBTItem(explosiveWand);
@@ -100,13 +100,13 @@ public final class Wizards extends JavaPlugin {
 
         Bukkit.getServer().addRecipe(flamingWandRecipe);
         Bukkit.getServer().addRecipe(voidWandRecipe);
-        Bukkit.getServer().addRecipe(transportWandRecipe);
+        Bukkit.getServer().addRecipe(travelWandRecipe);
         Bukkit.getServer().addRecipe(explosiveWandRecipe);
         Bukkit.getServer().addRecipe(toxicWandRecipe);
 
         wandItems.put("Flaming", flamingWand);
         wandItems.put("Void", voidWand);
-        wandItems.put("Transport", transportWand);
+        wandItems.put("Travel", travelWand);
         wandItems.put("Explosive", explosiveWand);
         wandItems.put("Toxic", toxicWand);
     }
